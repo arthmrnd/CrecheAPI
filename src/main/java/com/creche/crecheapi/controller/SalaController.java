@@ -1,6 +1,7 @@
 package com.creche.crecheapi.controller;
 
 import com.creche.crecheapi.entity.Sala;
+import com.creche.crecheapi.request.SalaRequest;
 import com.creche.crecheapi.service.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -29,12 +30,12 @@ public class SalaController {
     }
 
     @GetMapping(value = "/buscaPorId/{id}")
-    public Mono<Sala> buscaPorId(@PathVariable String id){
+    public Mono<Sala> buscaPorId(@PathVariable Long id){
         return salaService.findById(id);
     }
 
     @PostMapping("/cadastro")
-    public Mono<Sala> cadastro(@RequestBody Sala sala){
-        return salaService.cadastro(sala);
+    public Mono<Sala> cadastro(@RequestBody SalaRequest salaRequest){
+        return salaService.cadastro(salaRequest);
     }
 }
