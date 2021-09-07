@@ -29,7 +29,7 @@ public class SalaController {
         return Flux.zip(intervalo, events);
     }
 
-    @GetMapping(value = "/buscaPorId/{id}")
+    @GetMapping("/buscaPorId/{id}")
     public Mono<Sala> buscaPorId(@PathVariable Long id){
         return salaService.findById(id);
     }
