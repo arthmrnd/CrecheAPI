@@ -20,7 +20,11 @@ public class Sala {
     @Id
     @Column(value = "id_sala")
     private Long id;
+//    @ManyToOne
+//    @JoinColumn(name = "id_professor",referencedColumnName = "id_professor")
     private Professor professor;
+//    @ManyToOne
+//    @JoinColumn(name = "id_crianca", referencedColumnName = "id_crianca")
     private List<Crianca> crianca;
 
     public Sala(Professor professor, List<Crianca> criancas) {
