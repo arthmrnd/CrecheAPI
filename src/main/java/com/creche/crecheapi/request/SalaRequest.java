@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SalaRequest {
     private Long professor;
-    private Long crianca;
+
 }

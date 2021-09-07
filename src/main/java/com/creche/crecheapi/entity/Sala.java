@@ -7,7 +7,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+import reactor.core.publisher.Mono;
 
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -25,10 +27,9 @@ public class Sala {
     private Professor professor;
 //    @ManyToOne
 //    @JoinColumn(name = "id_crianca", referencedColumnName = "id_crianca")
-    private List<Crianca> crianca;
+    private Collection<Crianca> crianca;
 
-    public Sala(Professor professor, List<Crianca> criancas) {
-        this.professor = professor;
-        this.crianca = criancas;
+    public Sala(Mono<Professor> professor) {
+        this.professor = professor.block();
     }
 }
