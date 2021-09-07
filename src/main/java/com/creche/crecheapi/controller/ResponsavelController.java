@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("responsavel")
+@RequestMapping("/responsavel")
 public class ResponsavelController {
 
     private final ResponsavelService service;
@@ -24,7 +24,7 @@ public class ResponsavelController {
         return service.procurarResponsavel(id);
     }
 
-    @PostMapping("/dd")
+    @PostMapping
     public Mono<Responsavel> cadastrarResponsavel(@RequestBody ResponsavelRequest responsavelRequest) {
         return service.cadastrarResponsavel(responsavelRequest);
     }
