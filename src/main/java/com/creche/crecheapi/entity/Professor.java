@@ -4,26 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "professor")
+@Table(value = "professor")
 public class Professor {
 
     @Id
-    @Column(name = "id_professor")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(value = "id_professor")
     private Long id;
     private String nome;
     private String serie;
