@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -19,6 +21,11 @@ public class ResponsavelController {
 
     private final ResponsavelService service;
 
+    @GetMapping
+    public Flux<Responsavel> listarTodos() {
+        return service.listarTodos();
+    }
+
     @GetMapping("/{id}")
     public Mono<Responsavel> procurarResponsavel(@PathVariable Long id) {
         return service.procurarResponsavel(id);
@@ -27,5 +34,11 @@ public class ResponsavelController {
     @PostMapping
     public Mono<Responsavel> cadastrarResponsavel(@RequestBody ResponsavelRequest responsavelRequest) {
         return service.cadastrarResponsavel(responsavelRequest);
+    }
+
+    @PutMapping("/{id}")
+    public Mono<Responsavel> atualizaResponsavel(@PathVariable Long id,
+                                                 @RequestBody ResponsavelRequest responsavelRequest) {
+        return service.atualizarResponsavel(id,responsavelRequest);
     }
 }
