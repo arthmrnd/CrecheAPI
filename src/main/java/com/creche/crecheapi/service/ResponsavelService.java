@@ -1,6 +1,5 @@
 package com.creche.crecheapi.service;
 
-import com.creche.crecheapi.entity.Endereco;
 import com.creche.crecheapi.entity.Responsavel;
 import com.creche.crecheapi.repository.ResponsavelRepository;
 import com.creche.crecheapi.repository.TelefoneRepository;
@@ -19,9 +18,7 @@ public class ResponsavelService {
 
     public Mono<Responsavel> cadastrarResponsavel(ResponsavelRequest responsavelRequest) {
         var responsavel = responsavelRequest.convert();
-        for(int i = 0; i < responsavelRequest.getTelefone().size(); i++) {
-            telefoneRepository.save(responsavelRequest.getTelefone().get(i));
-        }
+        responsavelRequest.getTelefone().forEach(telefoneRepository::save);
         return repository.save(responsavel);
     }
 
@@ -34,17 +31,7 @@ public class ResponsavelService {
     }
 
     public Mono<Responsavel> atualizarResponsavel(String id, ResponsavelRequest responsavelRequest) {
-        var responsavel = Responsavel.builder()
-                .id(id)
-                .nome(responsavelRequest.getNome())
-                .idade(responsavelRequest.getIdade())
-                .endereco(Endereco.builder()
-                        .idEndereco(repository.findById(id).map(Responsavel::getId).toString())
-                        .cep(responsavelRequest.getCep())
-                        .numero(responsavelRequest.getNumeroEndereco())
-                        .complemento(responsavelRequest.getComplementoEndereco())
-                        .build())
-                .build();
+        var responsavel = responsavelRequest.atualizar(id);
         return repository.save(responsavel);
     }
 }

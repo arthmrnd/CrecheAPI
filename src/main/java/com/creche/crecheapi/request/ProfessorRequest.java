@@ -1,49 +1,48 @@
 package com.creche.crecheapi.request;
 
 import com.creche.crecheapi.entity.Endereco;
-import com.creche.crecheapi.entity.Responsavel;
-import com.creche.crecheapi.entity.Telefone;
+import com.creche.crecheapi.entity.Professor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponsavelRequest {
+public class ProfessorRequest {
 
     private String nome;
     private Integer idade;
+    private String serie;
     private String cep;
     private Integer numeroEndereco;
     private String complementoEndereco;
-    private List<Telefone> telefone;
 
-    public Responsavel convert() {
-        return Responsavel.builder()
+    public Professor convert() {
+        return Professor.builder()
                 .id(UUID.randomUUID().toString())
                 .nome(this.nome)
                 .idade(this.idade)
+                .serie(this.serie)
                 .endereco(Endereco.builder()
                         .idEndereco(UUID.randomUUID().toString())
                         .cep(this.cep)
                         .numero(this.numeroEndereco)
                         .complemento(this.complementoEndereco)
                         .build())
-                .telefones(this.telefone)
                 .build();
     }
 
-    public Responsavel atualizar(String id) {
-        return Responsavel.builder()
+    public Professor atualizar(String id) {
+        return Professor.builder()
                 .id(id)
                 .nome(this.nome)
                 .idade(this.idade)
+                .serie(this.serie)
                 .endereco(Endereco.builder()
                         .idEndereco(UUID.randomUUID().toString())
                         .cep(this.cep)

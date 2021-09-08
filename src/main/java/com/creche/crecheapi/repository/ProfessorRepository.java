@@ -5,6 +5,6 @@ import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository  extends ReactiveSortingRepository<Professor, Long> {
+public interface ProfessorRepository  extends ReactiveSortingRepository<Professor, String> {
 
 }

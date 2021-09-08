@@ -18,7 +18,6 @@ public class Crianca {
     @Id
     @Column(value = "id_crianca")
     private String nome;
-    private String idade;
+    private Integer idade;
     private Responsavel responsavel;
-    private Sala sala;
 }
