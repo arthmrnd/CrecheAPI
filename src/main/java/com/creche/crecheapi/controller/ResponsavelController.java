@@ -26,8 +26,8 @@ public class ResponsavelController {
         return service.listarTodos();
     }
 
-    @GetMapping("/{id}")
-    public Mono<Responsavel> procurarResponsavel(@PathVariable Long id) {
+    @GetMapping("/buscarResponsavel/{id}")
+    public Mono<Responsavel> procurarResponsavel(@PathVariable String id) {
         return service.procurarResponsavel(id);
     }
 
@@ -36,8 +36,8 @@ public class ResponsavelController {
         return service.cadastrarResponsavel(responsavelRequest);
     }
 
-    @PutMapping("/{id}")
-    public Mono<Responsavel> atualizaResponsavel(@PathVariable Long id,
+    @PutMapping("/alterarResponsavel/{id}")
+    public Mono<Responsavel> atualizaResponsavel(@PathVariable String id,
                                                  @RequestBody ResponsavelRequest responsavelRequest) {
         return service.atualizarResponsavel(id,responsavelRequest);
     }
