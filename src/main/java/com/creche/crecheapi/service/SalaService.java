@@ -1,30 +1,26 @@
 package com.creche.crecheapi.service;
 
+import com.creche.crecheapi.entity.Crianca;
+import com.creche.crecheapi.entity.Professor;
 import com.creche.crecheapi.entity.Sala;
-import com.creche.crecheapi.repository.CriancaRepository;
-import com.creche.crecheapi.repository.ProfessorRepository;
+import com.creche.crecheapi.exception.CriancaNaoExisteException;
+import com.creche.crecheapi.exception.ProfessorNaoExisteException;
+import com.creche.crecheapi.repository.CriancaDBRepository;
+import com.creche.crecheapi.repository.ProfessorDBRepository;
 import com.creche.crecheapi.repository.SalaRepository;
 import com.creche.crecheapi.request.SalaRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class SalaService {
+public class SalaService{
     private final SalaRepository salaRepository;
-    private final ProfessorRepository professorRepository;
-    private final CriancaRepository criancaRepository;
-
-    public Mono<Sala> cadastro(SalaRequest salaRequest){
-        //pendente relacionar os dados de Criancas e Professor já cadastrados antes
-//        var professor = professorRepository.findById(salaRequest.getIdProfessor());
-//        var criancas = criancaRepository.findByNomeIn(salaRequest.getNomeCriancas());
-//        var sala = salaRequest.convert(professor, criancas);
-        var sala = new Sala(); //para não da erro na hora de subir o código
-        return salaRepository.save(sala);
-    }
+    private final ProfessorDBRepository professorDBRepository;
+    private final CriancaDBRepository criancaDBRepository;
 
     public Flux<Sala> findAll() {
         return salaRepository.findAllByOrderByProfessor();
@@ -32,6 +28,28 @@ public class SalaService {
 
     public Mono<Sala> findById(Long id) {
         return salaRepository.findById(id);
+    }
+
+    public Mono<Sala> cadastro(SalaRequest salaRequest){
+        var professor = getProfessor(salaRequest);
+        var criancas = getCriancas(salaRequest) ;
+        return salaRepository.save(salaRequest.convert(professor, criancas));
+    }
+
+    private List<Crianca> getCriancas(SalaRequest salaRequest) {
+        var criancas = criancaDBRepository.findByNomeIn(salaRequest.getNomeCriancas());
+        if (criancas.contains(null) || criancas.isEmpty()){
+            throw new CriancaNaoExisteException();
+        }
+        return criancas;
+    }
+
+    private Professor getProfessor(SalaRequest salaRequest) {
+        var professor = professorDBRepository.findById(salaRequest.getIdProfessor());
+        if(professor.isEmpty()){
+            throw new ProfessorNaoExisteException(salaRequest.getIdProfessor());
+        }
+        return professor.get();
     }
 
 }
