@@ -1,8 +1,11 @@
 package com.creche.crecheapi.service;
 
 import com.creche.crecheapi.entity.Sala;
+import com.creche.crecheapi.exception.CriancaJaTemSalaException;
 import com.creche.crecheapi.exception.CriancaNaoExisteException;
+import com.creche.crecheapi.exception.ProfessorJaTemSalaException;
 import com.creche.crecheapi.exception.ProfessorNaoExisteException;
+import com.creche.crecheapi.repository.SalaDBRepository;
 import com.creche.crecheapi.repository.SalaRepository;
 import com.creche.crecheapi.request.SalaRequest;
 import com.creche.crecheapi.request.SalaRequestAtualizar;
@@ -20,6 +23,7 @@ public class SalaService{
 
     private final SalaRepository salaRepository;
     private final CriancaService criancaService;
+    private final SalaDBRepository salaDBRepository;
     private final ProfessorService professorService;
 
     public Flux<SalaResponse> findAll() {
@@ -42,9 +46,14 @@ public class SalaService{
         return salaRepository.save(salaRequestAtualizar.convert(id));
     }
 
-    private void checkProfessor(String professor) {
+    private void checkProfessor(String professor){
         if (!professorService.professorExiste(professor)){
             throw new ProfessorNaoExisteException(professor);
+        }
+        if (salaDBRepository.findAll().stream()
+                .anyMatch(sala -> sala.getIdProfessor().contains(professor))
+           ){
+            throw new ProfessorJaTemSalaException(professor);
         }
     }
 
@@ -52,6 +61,11 @@ public class SalaService{
         for (String crianca : criancas){
             if (!criancaService.criancaExiste(crianca)) {
                 throw new CriancaNaoExisteException(crianca);
+            }
+            if(salaDBRepository.findAll().stream()
+                    .anyMatch(sala -> sala.getIdCrianca().contains(crianca))
+              ){
+                throw new CriancaJaTemSalaException(crianca);
             }
         }
     }
