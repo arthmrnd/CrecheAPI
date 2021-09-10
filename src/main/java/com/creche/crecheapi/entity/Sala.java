@@ -29,8 +29,8 @@ public class Sala {
     public SalaResponse response(Sala sala, ProfessorService professorService, CriancaService criancaService){
         return SalaResponse.builder()
                 .id(sala.getId())
-                .professor(professorService.retornaObjetoProfessor(sala.getIdProfessor()))
-                .criancas(criancaService.retornaObjetoCrianca(sala.getIdCrianca()))
+                .professor(professorService.retornaProfessorResponse(sala.getIdProfessor()))
+                .criancas(criancaService.retornaCriancaResponse(sala.getIdCrianca()))
                 .build();
     }
 

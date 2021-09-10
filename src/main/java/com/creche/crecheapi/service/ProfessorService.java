@@ -39,10 +39,10 @@ public class ProfessorService {
         return repository.save(professor);
     }
 
-    public Professor retornaObjetoProfessor(String id){
+    public ProfessorResponse retornaProfessorResponse(String id){
         var professorOptional = dbRepository.findById(id);
-        if (professorOptional.isEmpty()) return new Professor();
-        else return professorOptional.get();
+        if (professorOptional.isEmpty()) return new ProfessorResponse();
+        else return professorOptional.get().response(professorOptional.get(),enderecoResponse,consultaEndereco);
     }
 
     public boolean professorExiste(String id){

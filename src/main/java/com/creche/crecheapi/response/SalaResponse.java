@@ -1,7 +1,5 @@
 package com.creche.crecheapi.response;
 
-import com.creche.crecheapi.entity.Crianca;
-import com.creche.crecheapi.entity.Professor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +10,7 @@ import java.util.List;
 public class SalaResponse {
 
     private String id;
-    private Professor professor;
-    private List<Crianca> criancas;
+    private ProfessorResponse professor;
+    private List<CriancaResponse> criancas;
 
 }

@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +48,10 @@ public class CriancaService {
         return criancaRepository.save(criancaRequest.convert(id));
     }
 
-    public List<Crianca> retornaObjetoCrianca(List<String> idCrianca) {
-        return dbRepository.findByIdIn(idCrianca);
+    public List<CriancaResponse> retornaCriancaResponse(List<String> idCrianca) {
+        return dbRepository.findByIdIn(idCrianca).stream()
+                .map(crianca -> crianca.response(crianca,responsavelService))
+                .collect(Collectors.toList());
     }
 
     public boolean criancaExiste(String nomeCriancas) {
