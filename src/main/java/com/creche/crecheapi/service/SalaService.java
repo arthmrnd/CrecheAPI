@@ -35,7 +35,7 @@ public class SalaService{
     }
 
     public Mono<Sala> cadastro(SalaRequest salaRequest){
-        String id = null;
+        String id = "";
         checkProfessor(salaRequest.getIdProfessor(), id);
         checkCriancas(salaRequest.getIdCriancas(), id);
         return salaRepository.save(salaRequest.convert());
