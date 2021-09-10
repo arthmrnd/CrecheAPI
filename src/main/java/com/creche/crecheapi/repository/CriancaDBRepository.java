@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CriancaDBRepository  extends MongoRepository<Crianca, String> {
     List<Crianca> findByNomeIn(List<String> nomeCriancas);
+
 }

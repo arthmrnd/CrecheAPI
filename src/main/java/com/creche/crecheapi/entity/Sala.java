@@ -21,4 +21,6 @@ public class Sala {
     private String id;
     private Professor professor;
     private List<Crianca> criancas;
+
+
 }
