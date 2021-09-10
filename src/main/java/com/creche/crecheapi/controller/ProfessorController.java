@@ -2,6 +2,7 @@ package com.creche.crecheapi.controller;
 
 import com.creche.crecheapi.entity.Professor;
 import com.creche.crecheapi.request.ProfessorRequest;
+import com.creche.crecheapi.response.ProfessorResponse;
 import com.creche.crecheapi.service.ProfessorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,12 @@ public class ProfessorController {
     private final ProfessorService service;
 
     @GetMapping
-    public Flux<Professor> listarTodos() {
+    public Flux<ProfessorResponse> listarTodos() {
         return service.listarProfessores();
     }
 
     @GetMapping("/buscarProfessor/{id}")
-    public Mono<Professor> procurarProfessor(@PathVariable String id) {
+    public Mono<ProfessorResponse> procurarProfessor(@PathVariable String id) {
         return service.procurarProfessor(id);
     }
 

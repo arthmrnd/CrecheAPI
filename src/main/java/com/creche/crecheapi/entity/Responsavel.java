@@ -1,5 +1,8 @@
 package com.creche.crecheapi.entity;
 
+import com.creche.crecheapi.response.EnderecoResponse;
+import com.creche.crecheapi.response.ResponsavelResponse;
+import com.creche.crecheapi.webclient.ConsultaEndereco;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,4 +32,15 @@ public class Responsavel {
     private Integer idade;
     private Endereco endereco;
     private List<Telefone> telefones;
+
+    public ResponsavelResponse response(Responsavel responsavel,
+                                        EnderecoResponse enderecoResponse, ConsultaEndereco consultaEndereco) {
+        return ResponsavelResponse.builder()
+                .id(responsavel.id)
+                .nome(responsavel.nome)
+                .idade(responsavel.idade)
+                .endereco(enderecoResponse.response(responsavel.endereco,consultaEndereco))
+                .telefones(responsavel.getTelefones())
+                .build();
+    }
 }

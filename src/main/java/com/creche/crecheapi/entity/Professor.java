@@ -1,5 +1,8 @@
 package com.creche.crecheapi.entity;
 
+import com.creche.crecheapi.response.EnderecoResponse;
+import com.creche.crecheapi.response.ProfessorResponse;
+import com.creche.crecheapi.webclient.ConsultaEndereco;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,4 +27,15 @@ public class Professor {
     private Integer idade;
     private String serie;
     private Endereco endereco;
+
+    public ProfessorResponse response(Professor professor,
+                                      EnderecoResponse enderecoResponse, ConsultaEndereco consultaEndereco) {
+        return ProfessorResponse.builder()
+                .id(professor.id)
+                .nome(professor.nome)
+                .idade(professor.idade)
+                .endereco(enderecoResponse.response(professor.endereco,consultaEndereco))
+                .serie(professor.serie)
+                .build();
+    }
 }

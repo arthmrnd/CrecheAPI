@@ -2,6 +2,7 @@ package com.creche.crecheapi.controller;
 
 import com.creche.crecheapi.entity.Responsavel;
 import com.creche.crecheapi.request.ResponsavelRequest;
+import com.creche.crecheapi.response.ResponsavelResponse;
 import com.creche.crecheapi.service.ResponsavelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,12 @@ public class ResponsavelController {
     private final ResponsavelService service;
 
     @GetMapping
-    public Flux<Responsavel> listarTodos() {
+    public Flux<ResponsavelResponse> listarTodos() {
         return service.listarTodos();
     }
 
     @GetMapping("/buscarResponsavel/{id}")
-    public Mono<Responsavel> procurarResponsavel(@PathVariable String id) {
+    public Mono<ResponsavelResponse> procurarResponsavel(@PathVariable String id) {
         return service.procurarResponsavel(id);
     }
 
