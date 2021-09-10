@@ -35,34 +35,37 @@ public class SalaService{
     }
 
     public Mono<Sala> cadastro(SalaRequest salaRequest){
-        checkProfessor(salaRequest.getIdProfessor());
-        checkCriancas(salaRequest.getIdCriancas());
+        String id = null;
+        checkProfessor(salaRequest.getIdProfessor(), id);
+        checkCriancas(salaRequest.getIdCriancas(), id);
         return salaRepository.save(salaRequest.convert());
     }
 
     public Mono<Sala> atualizar (SalaRequestAtualizar salaRequestAtualizar, String id){
-        checkProfessor(salaRequestAtualizar.getIdProfessor());
-        checkCriancas(salaRequestAtualizar.getIdCriancas());
+        checkProfessor(salaRequestAtualizar.getIdProfessor(), id);
+        checkCriancas(salaRequestAtualizar.getIdCriancas(), id);
         return salaRepository.save(salaRequestAtualizar.convert(id));
     }
 
-    private void checkProfessor(String professor){
+    private void checkProfessor(String professor, String id){
         if (!professorService.professorExiste(professor)){
             throw new ProfessorNaoExisteException(professor);
         }
         if (salaDBRepository.findAll().stream()
+                .filter(sala -> !sala.getId().contains(id))
                 .anyMatch(sala -> sala.getIdProfessor().contains(professor))
            ){
             throw new ProfessorJaTemSalaException(professor);
         }
     }
 
-    private void checkCriancas(List<String> criancas) {
+    private void checkCriancas(List<String> criancas, String id) {
         for (String crianca : criancas){
             if (!criancaService.criancaExiste(crianca)) {
                 throw new CriancaNaoExisteException(crianca);
             }
             if(salaDBRepository.findAll().stream()
+                    .filter(sala -> !sala.getId().contains(id))
                     .anyMatch(sala -> sala.getIdCrianca().contains(crianca))
               ){
                 throw new CriancaJaTemSalaException(crianca);
