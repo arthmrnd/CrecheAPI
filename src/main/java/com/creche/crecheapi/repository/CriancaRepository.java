@@ -13,7 +13,7 @@ import java.util.List;
 public interface CriancaRepository extends ReactiveSortingRepository<Crianca, String> {
 
     Mono<Crianca> findByNome(String nome);
-    Mono<Crianca> findByResponsavel(Responsavel responsavel);
-    Flux<Crianca> findAllByResponsavel(Responsavel responsavel);
+    Mono<Crianca> findByIdResponsavel(String idResponsavel);
+    Flux<Crianca> findAllByIdResponsavel(String idResponsavel);
     Mono<List<Crianca>> findByNomeIn(List<String> criancas);
 }
