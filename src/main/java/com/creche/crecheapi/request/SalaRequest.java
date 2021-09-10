@@ -1,7 +1,5 @@
 package com.creche.crecheapi.request;
 
-import com.creche.crecheapi.entity.Crianca;
-import com.creche.crecheapi.entity.Professor;
 import com.creche.crecheapi.entity.Sala;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,14 +14,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalaRequest {
-    private String idProfessor;
-    private List<String> nomeCriancas;
 
-    public Sala convert(Professor professor, List<Crianca> criancas) {
+    private String idProfessor;
+    private List<String> idCriancas;
+
+    public Sala convert() {
         return Sala.builder()
                 .id(UUID.randomUUID().toString())
-                .professor(professor)
-                .criancas(criancas)
+                .idProfessor(this.idProfessor)
+                .idCrianca(this.getIdCriancas())
                 .build();
     }
 

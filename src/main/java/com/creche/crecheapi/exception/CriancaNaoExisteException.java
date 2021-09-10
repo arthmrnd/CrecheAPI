@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class CriancaNaoExisteException extends RuntimeException {
-    public CriancaNaoExisteException(){
-        super("Uma ou mais Crianças não existem!");
+    public CriancaNaoExisteException(String id){
+        super("Criança de id: "+id+", informado não existe!");
     }
 }
