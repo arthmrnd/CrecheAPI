@@ -1,6 +1,7 @@
 package com.creche.crecheapi.service;
 
 import com.creche.crecheapi.entity.Responsavel;
+import com.creche.crecheapi.repository.ResponsavelDBRepository;
 import com.creche.crecheapi.repository.ResponsavelRepository;
 import com.creche.crecheapi.repository.TelefoneRepository;
 import com.creche.crecheapi.request.ResponsavelRequest;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 public class ResponsavelService {
 
     private final ResponsavelRepository repository;
+    private final ResponsavelDBRepository dbRepository;
     private final TelefoneRepository telefoneRepository;
 
     public Mono<Responsavel> cadastrarResponsavel(ResponsavelRequest responsavelRequest) {
@@ -33,5 +35,15 @@ public class ResponsavelService {
     public Mono<Responsavel> atualizarResponsavel(String id, ResponsavelRequest responsavelRequest) {
         var responsavel = responsavelRequest.atualizar(id);
         return repository.save(responsavel);
+    }
+
+    public Responsavel retornaObjetoResponsavel(String id) {
+        var responsavelOptional = dbRepository.findById(id);
+        if (responsavelOptional.isEmpty()) return new Responsavel();
+        else return responsavelOptional.get();
+    }
+
+    public Boolean responsavelExiste(String id) {
+        return dbRepository.existsById(id);
     }
 }

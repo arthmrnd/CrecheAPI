@@ -1,7 +1,7 @@
 package com.creche.crecheapi.entity;
 
-import com.creche.crecheapi.repository.ResponsavelRepository;
 import com.creche.crecheapi.response.CriancaResponse;
+import com.creche.crecheapi.service.ResponsavelService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,22 +27,12 @@ public class Crianca {
     private String idade;
     private String idResponsavel;
 
-    public CriancaResponse convert(ResponsavelRepository responsavelRepository) {
-        Responsavel responsavel = new Responsavel();
-        var mono = responsavelRepository.findById(this.idResponsavel);
-        mono.subscribe(resp -> Responsavel.builder()
-                .id(resp.getId())
-                .nome(resp.getNome())
-                .idade(resp.getIdade())
-                .endereco(resp.getEndereco())
-                .build()
-                );
-
+    public CriancaResponse response(Crianca crianca, ResponsavelService responsavelService) {
         return CriancaResponse.builder()
-                .id(this.id)
-                .nome(this.nome)
-                .idade(this.idade)
-                .responsavel(responsavel)
+                .id(crianca.getId())
+                .nome(crianca.getNome())
+                .idade(crianca.getIdade())
+                .responsavel(responsavelService.retornaObjetoResponsavel(crianca.getIdResponsavel()))
                 .build();
     }
 }

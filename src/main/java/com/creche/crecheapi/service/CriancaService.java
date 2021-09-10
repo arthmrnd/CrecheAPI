@@ -1,8 +1,8 @@
 package com.creche.crecheapi.service;
 
 import com.creche.crecheapi.entity.Crianca;
+import com.creche.crecheapi.exception.ResponsavelNaoExisteException;
 import com.creche.crecheapi.repository.CriancaRepository;
-import com.creche.crecheapi.repository.ResponsavelRepository;
 import com.creche.crecheapi.request.CriancaRequest;
 import com.creche.crecheapi.request.CriancaRequestAtualizar;
 import com.creche.crecheapi.response.CriancaResponse;
@@ -16,27 +16,27 @@ import reactor.core.publisher.Mono;
 public class CriancaService {
 
     private final CriancaRepository criancaRepository;
-    private final ResponsavelRepository responsavelRepository;
+    private final ResponsavelService responsavelService;
 
-    public Mono<Crianca> findByNome(String nome){
-        return criancaRepository.findByNome(nome);
+    public Mono<CriancaResponse> findByNome(String nome){
+        return criancaRepository.findByNome(nome).map(crianca -> crianca.response(crianca,responsavelService));
     }
 
-    public Mono<Crianca> findById(String id){
-        return criancaRepository.findById(id);
+    public Mono<CriancaResponse> findById(String id){
+        return criancaRepository.findById(id).map(crianca -> crianca.response(crianca,responsavelService));
     }
 
-//    public Flux<CriancaResponse> findAll(){
-//        return criancaRepository.findAll().map(crianca -> crianca.convert(responsavelRepository));
-//    }
-
-    public Flux<Crianca> findAll(){
-        return criancaRepository.findAll();
+    public Flux<CriancaResponse> findAll(){
+        return criancaRepository.findAll().map(crianca -> crianca.response(crianca,responsavelService));
     }
 
     public Mono<Crianca> adicionar(CriancaRequest criancaRequest) {
-        var crianca = criancaRequest.convert();
-        return criancaRepository.save(crianca);
+        if (responsavelService.responsavelExiste(criancaRequest.getIdResponsavel())) {
+            var crianca = criancaRequest.convert();
+            return criancaRepository.save(crianca);
+        } else {
+            throw new ResponsavelNaoExisteException(criancaRequest.getIdResponsavel());
+        }
 
     }
 

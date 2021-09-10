@@ -27,25 +27,25 @@ public class CriancaController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Flux<Crianca> listarTodos(){
+    public Flux<CriancaResponse> listarTodos(){
         return criancaService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Crianca> buscarPorId(@PathVariable String id){
+    public Mono<CriancaResponse> buscarPorId(@PathVariable String id){
         return criancaService.findById(id);
     }
 
     @GetMapping("nome/{nome}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Crianca> buscarPorNome(@PathVariable String nome){
+    public Mono<CriancaResponse> buscarPorNome(@PathVariable String nome){
         return criancaService.findByNome(nome);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Crianca> adiiconarCrianca(@RequestBody CriancaRequest criancaRequest) {
+    public Mono<Crianca> adiconarCrianca(@RequestBody CriancaRequest criancaRequest) {
         return criancaService.adicionar(criancaRequest);
     }
 
