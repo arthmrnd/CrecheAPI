@@ -1,6 +1,5 @@
 package com.creche.crecheapi.response;
 
-import com.creche.crecheapi.entity.Responsavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +10,6 @@ public class CriancaResponse {
     private String id;
     private String nome;
     private String idade;
-    private Responsavel responsavel;
+    private ResponsavelResponse responsavel;
 
 }

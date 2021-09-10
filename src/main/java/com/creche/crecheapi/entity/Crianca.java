@@ -32,7 +32,7 @@ public class Crianca {
                 .id(crianca.getId())
                 .nome(crianca.getNome())
                 .idade(crianca.getIdade())
-                .responsavel(responsavelService.retornaObjetoResponsavel(crianca.getIdResponsavel()))
+                .responsavel(responsavelService.retornaResponsavelResponse(crianca.getIdResponsavel()))
                 .build();
     }
 }
