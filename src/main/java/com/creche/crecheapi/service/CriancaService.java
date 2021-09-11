@@ -2,7 +2,6 @@ package com.creche.crecheapi.service;
 
 import com.creche.crecheapi.entity.Crianca;
 import com.creche.crecheapi.exception.ResponsavelNaoExisteException;
-import com.creche.crecheapi.repository.CriancaDBRepository;
 import com.creche.crecheapi.repository.CriancaRepository;
 import com.creche.crecheapi.request.CriancaRequest;
 import com.creche.crecheapi.request.CriancaRequestAtualizar;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,6 @@ public class CriancaService {
 
     private final CriancaRepository criancaRepository;
     private final ResponsavelService responsavelService;
-    private final CriancaDBRepository dbRepository;
 
     public Mono<CriancaResponse> findByNome(String nome){
         return criancaRepository.findByNome(nome).map(crianca -> crianca.response(crianca,responsavelService));
@@ -49,13 +47,14 @@ public class CriancaService {
     }
 
     public List<CriancaResponse> retornaCriancaResponse(List<String> idCrianca) {
-        return dbRepository.findByIdIn(idCrianca).stream()
-                .map(crianca -> crianca.response(crianca,responsavelService))
-                .collect(Collectors.toList());
+        List<CriancaResponse> criancaResponseList = new ArrayList<>();
+        criancaRepository.findAllById(idCrianca).subscribe(crianca -> criancaResponseList
+                .add(crianca.response(crianca, responsavelService)));
+        return criancaResponseList;
     }
 
     public boolean criancaExiste(String nomeCriancas) {
-        return dbRepository.existsById(nomeCriancas);
+        return criancaRepository.existsById(nomeCriancas).subscribe().isDisposed();
     }
 
 }

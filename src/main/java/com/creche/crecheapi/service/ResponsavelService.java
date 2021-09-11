@@ -49,7 +49,7 @@ public class ResponsavelService {
                 enderecoResponse,consultaEndereco);
     }
 
-    public Boolean responsavelExiste(String id) {
-        return dbRepository.existsById(id);
+    public boolean responsavelExiste(String id) {
+        return repository.existsById(id).subscribe().isDisposed();
     }
 }

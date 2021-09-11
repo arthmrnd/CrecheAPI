@@ -23,7 +23,7 @@ public class EnderecoResponse {
     private String localidade;
     private String uf;
 
-    public EnderecoResponse response(Endereco endereco, ConsultaEndereco consultaEndereco) {
+    public static EnderecoResponse response(Endereco endereco, ConsultaEndereco consultaEndereco) {
         var enderecoCompleto = consultaEndereco.getEndereco(endereco.getCep());
         return EnderecoResponse.builder()
                 .cep(enderecoCompleto.getCep())

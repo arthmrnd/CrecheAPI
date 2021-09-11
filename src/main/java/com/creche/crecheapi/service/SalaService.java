@@ -5,7 +5,6 @@ import com.creche.crecheapi.exception.CriancaJaTemSalaException;
 import com.creche.crecheapi.exception.CriancaNaoExisteException;
 import com.creche.crecheapi.exception.ProfessorJaTemSalaException;
 import com.creche.crecheapi.exception.ProfessorNaoExisteException;
-import com.creche.crecheapi.repository.SalaDBRepository;
 import com.creche.crecheapi.repository.SalaRepository;
 import com.creche.crecheapi.request.SalaRequest;
 import com.creche.crecheapi.request.SalaRequestAtualizar;
@@ -23,7 +22,6 @@ public class SalaService{
 
     private final SalaRepository salaRepository;
     private final CriancaService criancaService;
-    private final SalaDBRepository salaDBRepository;
     private final ProfessorService professorService;
 
     public Flux<SalaResponse> findAll() {
@@ -51,9 +49,10 @@ public class SalaService{
         if (!professorService.professorExiste(professor)){
             throw new ProfessorNaoExisteException(professor);
         }
-        if (salaDBRepository.findAll().stream()
+        if (salaRepository.findAll()
                 .filter(sala -> !sala.getId().contains(id))
-                .anyMatch(sala -> sala.getIdProfessor().contains(professor))
+                .any(sala -> sala.getIdProfessor().contains(professor))
+                .subscribe().isDisposed()
            ){
             throw new ProfessorJaTemSalaException(professor);
         }
@@ -64,9 +63,10 @@ public class SalaService{
             if (!criancaService.criancaExiste(crianca)) {
                 throw new CriancaNaoExisteException(crianca);
             }
-            if(salaDBRepository.findAll().stream()
+            if(salaRepository.findAll()
                     .filter(sala -> !sala.getId().contains(id))
-                    .anyMatch(sala -> sala.getIdCrianca().contains(crianca))
+                    .any(sala -> sala.getIdCrianca().contains(crianca))
+                    .subscribe().isDisposed()
               ){
                 throw new CriancaJaTemSalaException(crianca);
             }

@@ -46,6 +46,6 @@ public class ProfessorService {
     }
 
     public boolean professorExiste(String id){
-        return dbRepository.existsById(id);
+        return repository.existsById(id).subscribe().isDisposed();
     }
 }
